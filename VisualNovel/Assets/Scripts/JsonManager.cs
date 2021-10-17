@@ -5,7 +5,7 @@ using System;
 using System.IO;
 using Newtonsoft.Json;
 
-public class JsonManager : MonoBehaviour
+public class JsonManager
 {
     public static string Locale { get; set; }
     public static object GetLocale()

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>  
 <Data version="d0.1">
-	<Scene sid="A_001" background="classroom_morning">
+	<Scene sid="A_001" background="classroom_morning" next="A_002">
 		<ShowCharacter cid="A" standing="A_normal"/>
 		<Text talker="A" standing="A_serious" string="T_99_001" />
 		<Text talker="narrator" string="T_99_002" />
@@ -10,7 +10,6 @@
 		</Select>
 		<HideCharacter cid="A" />
 		<Text talker="B" string="T_99_006" />
-    <NextScene sid="A_002" />
 	</Scene>
   <Scene sid="A_001a" background="afterschool_sunset">
   </Scene>
