@@ -17,7 +17,7 @@ public class DialogManager : MonoBehaviour
     public Text DialogText;
     public Text CharacterText;
     public SpriteRenderer BackgroundSprite;
-    public Button NextButton;
+    public Text NextButton;
 
     public void IncreaseDialogIdx()
     {
@@ -38,6 +38,7 @@ public class DialogManager : MonoBehaviour
     {
         StopCoroutine(_coroutine);
         DialogText.text = _currentDialog.Props.Str;
+        NextButton.text = "\n¡å  ";
         IsWritingText = false;
     }
 
@@ -87,12 +88,14 @@ public class DialogManager : MonoBehaviour
     {
         CharacterText.text = talker;
         DialogText.text = "";
+        NextButton.text = "";
         IsWritingText = true;
         for (int i = 0; i < text.Length; i++)
         {
             DialogText.text += text[i];
             yield return new WaitForSeconds(0.06f);
         }
+        NextButton.text = "\n¡å  ";
         IsWritingText = false;
     }
 }

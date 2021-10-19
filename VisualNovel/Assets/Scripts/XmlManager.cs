@@ -42,7 +42,6 @@ class XmlManager
                         {
                             string talker = item.Attributes.GetNamedItem("talker")?.Value;
                             string standing = item.Attributes.GetNamedItem("standing")?.Value;
-                            // 로컬라이징 json 파일의 값으로 대체해야함
                             string str = item.Attributes.GetNamedItem("string")?.Value;
                             Prop props = new Prop
                             {
@@ -85,7 +84,6 @@ class XmlManager
                         {
                             string talker = item.Attributes.GetNamedItem("talker")?.Value;
                             string standing = item.Attributes.GetNamedItem("standing")?.Value;
-                            // 로컬라이징 json 파일의 값으로 대체해야함
                             string str = item.Attributes.GetNamedItem("string")?.Value;
                             List<DialogData> Cases = new List<DialogData>();
                             foreach (XmlNode _case in item)

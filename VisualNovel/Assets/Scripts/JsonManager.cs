@@ -13,7 +13,7 @@ public class JsonManager
     {
         TextAsset JsonFile = Resources.Load($"Localization/{Locale}") as TextAsset;
         string jsonString = JsonFile.text;
-       JObject json = JObject.Parse(jsonString);
+        JObject json = JObject.Parse(jsonString);
         return json;
     }
 }
