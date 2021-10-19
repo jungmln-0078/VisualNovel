@@ -14,6 +14,8 @@ public class DialogManager : MonoBehaviour
     private Coroutine _coroutine;
     private GameObject _selectScreen;
 
+    private bool _isWritingSelectText = false;
+
     public bool IsWritingText = false;
     public Text DialogText;
     public Text CharacterText;
@@ -42,6 +44,10 @@ public class DialogManager : MonoBehaviour
         DialogText.text = _currentDialog.Props.Str;
         NextButton.text = "\n¡å  ";
         IsWritingText = false;
+        if (_isWritingSelectText)
+        {
+            ShowSelectScreen();
+        }
     }
 
     public void GotoScene(string sid)
@@ -100,6 +106,7 @@ public class DialogManager : MonoBehaviour
                 case DialogDataType.Select:
                     {
                         _coroutine = StartCoroutine(WriteText(_currentDialog.Props.Character, _currentDialog.Props.Str, "Select"));
+                        _isWritingSelectText = true;
                         break;
                     }
             }
@@ -108,6 +115,7 @@ public class DialogManager : MonoBehaviour
 
     void ShowSelectScreen()
     {
+        _isWritingSelectText = false;
         _selectScreen.SetActive(true);
         foreach (DialogData _case in _currentDialog.Props.Cases)
         {
