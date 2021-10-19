@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System;
 using System.IO;
 using System.Xml;
+using Newtonsoft.Json.Linq;
 
 class XmlManager
 {
@@ -14,6 +15,8 @@ class XmlManager
 
         Xml.LoadXml(XmlFile.text);
         XmlNodeList XmlList = Xml.GetElementsByTagName("Scene");
+
+        JObject Json = JsonManager.GetLocale();
 
         List<Scene> Scenes = new List<Scene>();
 
@@ -43,9 +46,9 @@ class XmlManager
                             string str = item.Attributes.GetNamedItem("string")?.Value;
                             Prop props = new Prop
                             {
-                                Cid = talker,
+                                Character = talker == "narrator" ? "" : talker,
                                 Standing = standing,
-                                Str = str
+                                Str = (string) Json["Text"][str]
                             };
                             DialogData dialogData = new DialogData(scene, DialogDataType.Text, props);
                             scene.DialogDatas.Add(dialogData);
@@ -58,7 +61,7 @@ class XmlManager
                             string standing = item.Attributes.GetNamedItem("standing")?.Value;
                             Prop props = new Prop
                             {
-                                Cid = cid,
+                                Character = cid,
                                 Standing = standing,
                             };
                             DialogData dialogData = new DialogData(scene, DialogDataType.ShowCharacter, props);
@@ -71,7 +74,7 @@ class XmlManager
                             string cid = item.Attributes.GetNamedItem("cid")?.Value;
                             Prop props = new Prop
                             {
-                                Cid = cid
+                                Character = cid
                             };
                             DialogData dialogData = new DialogData(scene, DialogDataType.HideCharacter, props);
                             scene.DialogDatas.Add(dialogData);
@@ -92,16 +95,16 @@ class XmlManager
                                 Prop _props = new Prop
                                 {
                                     Sid = _goto,
-                                    Str = _str
+                                    Str = (string)Json["Text"][_str]
                                 };
                                 DialogData Case = new DialogData(scene, DialogDataType.Case, _props);
                                 Cases.Add(Case);
                             }
                             Prop props = new Prop
                             {
-                                Cid = talker,
+                                Character = talker,
                                 Standing = standing,
-                                Str = str,
+                                Str = (string)Json["Text"][str],
                                 Cases = Cases
                             };
                             DialogData dialogData = new DialogData(scene, DialogDataType.Select, props);

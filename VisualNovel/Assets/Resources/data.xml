@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>  
 <Data version="d0.1">
-	<Scene sid="A_001" background="classroom_morning" next="A_002">
-		<ShowCharacter cid="A" standing="A_normal"/>
+	<Scene sid="A_001" background="ex01" next="A_002">
 		<Text talker="A" standing="A_serious" string="T_99_001" />
 		<Text talker="narrator" string="T_99_002" />
-		<Select talker="A" standing="A_serious" string="T_99_003">
+		<!--<Select talker="A" standing="A_serious" string="T_99_003">
 			<Case goto="" string="T_99_004" />
 			<Case goto="A_001a" string="T_99_005" />
-		</Select>
-		<HideCharacter cid="A" />
+		</Select>-->
 		<Text talker="B" string="T_99_006" />
 	</Scene>
-  <Scene sid="A_001a" background="afterschool_sunset">
+  <Scene sid="A_001a" background="ex02">
   </Scene>
-	<Scene sid="A_002" background="park_night">
+	<Scene sid="A_002" background="ex02">
+    <Text talker="B" string="T_99_007" />
 	</Scene>
 </Data>

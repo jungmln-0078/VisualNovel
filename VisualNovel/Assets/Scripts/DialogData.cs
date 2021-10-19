@@ -8,8 +8,7 @@ public enum DialogDataType{
     ShowCharacter,
     HideCharacter,
     Select,
-    Case,
-    Effect
+    Case
 }
 public class Scene
 {
@@ -45,7 +44,7 @@ public class DialogData
 
 public class Prop
 {
-    public string? Cid { get; set; }
+    public string? Character { get; set; }
     public string? Sid { get; set; }
     public string? Standing { get; set; }
     public string? Str { get; set; }
