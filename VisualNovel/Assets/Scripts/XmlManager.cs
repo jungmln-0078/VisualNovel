@@ -29,8 +29,6 @@ class XmlManager
 
             Scene scene = new Scene(sid, backGround, nextScene, bgm);
 
-            // 싱글톤 SceneManager, CharacterManager 선언
-            // Scene이 변경되면 모든 스탠딩, 배경은 초기화된다.
             foreach (XmlNode item in Scene)
             {
                 ;
@@ -45,7 +43,7 @@ class XmlManager
                             string str = item.Attributes.GetNamedItem("string")?.Value;
                             Prop props = new Prop
                             {
-                                Character = talker == "narrator" ? "" : talker,
+                                Character = talker == "narrator" ? "" : (string) Json["Character"][talker]["Name"],
                                 Standing = standing,
                                 Str = (string) Json["Text"][str]
                             };
@@ -89,20 +87,20 @@ class XmlManager
                             foreach (XmlNode _case in item)
                             {
                                 string _goto = _case.Attributes.GetNamedItem("goto")?.Value;
-                                string _str = item.Attributes.GetNamedItem("string")?.Value;
+                                string _str = _case.Attributes.GetNamedItem("string")?.Value;
                                 Prop _props = new Prop
                                 {
                                     Sid = _goto,
-                                    Str = (string)Json["Text"][_str]
+                                    Str = (string) Json["Text"][_str]
                                 };
                                 DialogData Case = new DialogData(scene, DialogDataType.Case, _props);
                                 Cases.Add(Case);
                             }
                             Prop props = new Prop
                             {
-                                Character = talker,
+                                Character = (string) Json["Character"][talker]["Name"],
                                 Standing = standing,
-                                Str = (string)Json["Text"][str],
+                                Str = (string) Json["Text"][str],
                                 Cases = Cases
                             };
                             DialogData dialogData = new DialogData(scene, DialogDataType.Select, props);
