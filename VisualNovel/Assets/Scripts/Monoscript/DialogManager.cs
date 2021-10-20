@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -135,13 +136,15 @@ public class DialogManager : MonoBehaviour
 
     IEnumerator WriteText(string talker, string text, string type = "")
     {
+        StringBuilder sb = new StringBuilder("");
         CharacterText.text = talker;
         DialogText.text = "";
         NextButton.text = "";
         IsWritingText = true;
         for (int i = 0; i < text.Length; i++)
         {
-            DialogText.text += text[i];
+            sb.Append(text[i]);
+            DialogText.text = sb.ToString();
             yield return new WaitForSeconds(0.06f);
         }
         NextButton.text = "\n¡å  ";
