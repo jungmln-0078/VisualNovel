@@ -11,8 +11,7 @@ public class XmlManager : SingleTon<XmlManager>
     public List<Scene> LoadXml()
     {
         XmlDocument Xml = new XmlDocument();
-        TextAsset XmlFile = Resources.Load("data") as TextAsset;
-
+        TextAsset XmlFile = ResourceManager.Instance.Get("data") as TextAsset;
         Xml.LoadXml(XmlFile.text);
         XmlNodeList XmlList = Xml.GetElementsByTagName("Scene");
 

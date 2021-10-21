@@ -4,11 +4,11 @@ using UnityEngine.SceneManagement;
 
 public class ManagerController : MonoBehaviour
 {
-
     void Awake()
     {
         object[] instance = FindObjectsOfType(typeof(ManagerController));
         DontDestroyOnLoad(gameObject);
+        ResourceManager.Instance.LoadResources();
         if (instance.Length > 1)
         {
             Destroy(gameObject);
