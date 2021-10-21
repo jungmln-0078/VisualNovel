@@ -4,7 +4,7 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class DialogManager : MonoBehaviour
+public class DialogManager : MonoSingleTon<DialogManager>
 {
     [SerializeField]
     private List<Scene> _scenes;
@@ -13,18 +13,20 @@ public class DialogManager : MonoBehaviour
     private DialogData _currentDialog;
     private int _dialogIdx = 0;
     private Coroutine _coroutine;
+
+    // set on start()
     private GameObject _selectScreen;
+    private Text _dialogText;
+    private Text _characterText;
+    private GameObject _caseButton;
+    private SpriteRenderer _backgroundSprite;
+    private Text _nextButton;
 
     private bool _isWritingSelectText = false;
 
     public bool IsWritingText = false;
-    public Text DialogText;
-    public Text CharacterText;
-    public GameObject Case;
-    public SpriteRenderer BackgroundSprite;
-    public Text NextButton;
 
-    public void IncreaseDialogIdx()
+    public void NextDialog()
     {
         if (_dialogIdx < _currentScene.DialogDatas.Count - 1)
         {
@@ -33,18 +35,23 @@ public class DialogManager : MonoBehaviour
         }
         else
         {
-            _sceneIdx = _scenes.FindIndex(s => s.Sid == _currentScene.NextScene);
-            _dialogIdx = 0;
-            LoadScene();
+            int nextIdx = _scenes.FindIndex(s => s.Sid == _currentScene.NextScene);
+            if (nextIdx != -1)
+            {
+                _sceneIdx = nextIdx;
+                _dialogIdx = 0;
+                LoadScene();
+            }
         }
     }
 
-    public void EndWriteText()
+    public void StopWriteText()
     {
         StopCoroutine(_coroutine);
-        DialogText.text = _currentDialog.Props.Str;
-        NextButton.text = "\n¡å  ";
+        _dialogText.text = _currentDialog.Props.Str;
+        _nextButton.text = "\n¡å  ";
         IsWritingText = false;
+        _coroutine = null;
         if (_isWritingSelectText)
         {
             ShowSelectScreen();
@@ -58,9 +65,10 @@ public class DialogManager : MonoBehaviour
             _sceneIdx = _scenes.FindIndex(s => s.Sid == sid);
             _dialogIdx = 0;
             LoadScene();
-        } else
+        }
+        else
         {
-            IncreaseDialogIdx();
+           NextDialog();
         }
         foreach (GameObject _case in GameObject.FindGameObjectsWithTag("Case"))
         {
@@ -69,18 +77,34 @@ public class DialogManager : MonoBehaviour
         _selectScreen.SetActive(false);
     }
 
-    // Start is called before the first frame update
+    public void OnResume()
+    {
+        LoadAsset();
+        LoadScene();
+        LoadDialog();
+    }
+
     void Start()
     {
-        _selectScreen = GameObject.Find("Canvas").transform.Find("Select").gameObject;
-        _scenes = XmlManager.LoadXml();
+        LoadAsset();
         LoadScene();
+    }
+
+    void LoadAsset()
+    {
+        _selectScreen = GameObject.Find("Canvas").transform.Find("Select").gameObject;
+        _dialogText = GameObject.Find("Talk").gameObject.GetComponent<Text>();
+        _characterText = GameObject.Find("TalkerName").gameObject.GetComponent<Text>();
+        _caseButton = Resources.Load<GameObject>("Prefab/Case");
+        _backgroundSprite = GameObject.Find("Background").gameObject.GetComponent<SpriteRenderer>();
+        _nextButton = GameObject.Find("ButtonDisplay").gameObject.GetComponent<Text>();
+        _scenes = XmlManager.Instance.LoadXml();
     }
 
     void LoadScene()
     {
         _currentScene = _scenes[_sceneIdx];
-        BackgroundSprite.sprite = Resources.Load<Sprite>($"Background/{_currentScene.Background}");
+        _backgroundSprite.sprite = Resources.Load<Sprite>($"Background/{_currentScene.Background}");
         LoadDialog();
     }
 
@@ -93,7 +117,8 @@ public class DialogManager : MonoBehaviour
             {
                 case DialogDataType.Text:
                     {
-                        _coroutine = StartCoroutine(WriteText(_currentDialog.Props.Character, _currentDialog.Props.Str));
+                        if (_coroutine == null)
+                            _coroutine = StartCoroutine(WriteText(_currentDialog.Props.Character, _currentDialog.Props.Str));
                         break;
                     }
                 case DialogDataType.ShowCharacter:
@@ -106,7 +131,8 @@ public class DialogManager : MonoBehaviour
                     }
                 case DialogDataType.Select:
                     {
-                        _coroutine = StartCoroutine(WriteText(_currentDialog.Props.Character, _currentDialog.Props.Str, "Select"));
+                        if (_coroutine == null)
+                            _coroutine = StartCoroutine(WriteText(_currentDialog.Props.Character, _currentDialog.Props.Str, "Select"));
                         _isWritingSelectText = true;
                         break;
                     }
@@ -118,15 +144,16 @@ public class DialogManager : MonoBehaviour
     {
         _isWritingSelectText = false;
         _selectScreen.SetActive(true);
-        foreach (DialogData _case in _currentDialog.Props.Cases)
+        List<DialogData> cases = _currentDialog.Props.Cases;
+        for (int caseIdx = 0; caseIdx < cases.Count; ++caseIdx)
         {
-            int idx = _currentDialog.Props.Cases.FindIndex(c => c.Props.Sid == _case.Props.Sid);
+            int idx = cases.FindIndex(c => c.Props.Sid == cases[caseIdx].Props.Sid);
 
-            GameObject caseObj = Instantiate(Case);
+            GameObject caseObj = Instantiate(_caseButton);
             caseObj.name = $"Case {idx}";
             caseObj.transform.SetParent(_selectScreen.transform);
-            caseObj.transform.GetChild(0).GetComponent<Text>().text = _case.Props.Str;
-            caseObj.GetComponent<SelectCase>().SetGoto(_case.Props.Sid);
+            caseObj.transform.GetChild(0).GetComponent<Text>().text = cases[caseIdx].Props.Str;
+            caseObj.GetComponent<SelectCase>().SetGoto(cases[caseIdx].Props.Sid);
 
             RectTransform pos = caseObj.GetComponent<RectTransform>();
             pos.anchoredPosition = new Vector2(0, 100 - (idx * 100));
@@ -137,18 +164,19 @@ public class DialogManager : MonoBehaviour
     IEnumerator WriteText(string talker, string text, string type = "")
     {
         StringBuilder sb = new StringBuilder("");
-        CharacterText.text = talker;
-        DialogText.text = "";
-        NextButton.text = "";
+        _characterText.text = talker;
+        _dialogText.text = "";
+        _nextButton.text = "";
         IsWritingText = true;
         for (int i = 0; i < text.Length; i++)
         {
             sb.Append(text[i]);
-            DialogText.text = sb.ToString();
+            _dialogText.text = sb.ToString();
             yield return new WaitForSeconds(0.06f);
         }
-        NextButton.text = "\n¡å  ";
+        _nextButton.text = "\n¡å  ";
         IsWritingText = false;
+        _coroutine = null;
         if (type == "Select")
         {
             ShowSelectScreen();

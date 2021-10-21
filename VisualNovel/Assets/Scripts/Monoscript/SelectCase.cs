@@ -8,7 +8,7 @@ public class SelectCase : MonoBehaviour
     
     public void OnClick()
     {
-        DialogManager dialogManager = GameObject.Find("DialogManager").GetComponent<DialogManager>();
+        DialogManager dialogManager = DialogManager.Instance;
         dialogManager.GotoScene(_goto);
     }
 

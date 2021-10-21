@@ -6,9 +6,9 @@ using System.IO;
 using System.Xml;
 using Newtonsoft.Json.Linq;
 
-class XmlManager
+public class XmlManager : SingleTon<XmlManager>
 {
-    public static List<Scene> LoadXml()
+    public List<Scene> LoadXml()
     {
         XmlDocument Xml = new XmlDocument();
         TextAsset XmlFile = Resources.Load("data") as TextAsset;
@@ -16,46 +16,44 @@ class XmlManager
         Xml.LoadXml(XmlFile.text);
         XmlNodeList XmlList = Xml.GetElementsByTagName("Scene");
 
-        JObject Json = JsonManager.GetLocale();
+        JObject Json = JsonManager.Instance.GetLocale();
 
         List<Scene> Scenes = new List<Scene>();
-
-        foreach (XmlNode Scene in XmlList)
+        for (int sceneIdx = 0; sceneIdx < XmlList.Count; ++sceneIdx)
         {
-            string sid = Scene.Attributes.GetNamedItem("sid")?.Value;
-            string backGround = Scene.Attributes.GetNamedItem("background")?.Value;
-            string nextScene = Scene.Attributes.GetNamedItem("next")?.Value;
-            string bgm = Scene.Attributes.GetNamedItem("bgm")?.Value;
+            XmlNode sceneNode = XmlList[sceneIdx];
+            string sid = sceneNode.Attributes.GetNamedItem("sid")?.Value;
+            string backGround = sceneNode.Attributes.GetNamedItem("background")?.Value;
+            string nextScene = sceneNode.Attributes.GetNamedItem("next")?.Value;
+            string bgm = sceneNode.Attributes.GetNamedItem("bgm")?.Value;
 
             Scene scene = new Scene(sid, backGround, nextScene, bgm);
 
-            foreach (XmlNode item in Scene)
+            for (int dialogIdx = 0; dialogIdx < sceneNode.ChildNodes.Count; ++dialogIdx)
             {
-                ;
-                string TagName = item.Name;
+                XmlNode dialogNode = XmlList[sceneIdx].ChildNodes[dialogIdx];
+                string TagName = dialogNode.Name;
                 switch (TagName)
                 {
-                    // 기본 대화 내용 출력
                     case "Text":
                         {
-                            string talker = item.Attributes.GetNamedItem("talker")?.Value;
-                            string standing = item.Attributes.GetNamedItem("standing")?.Value;
-                            string str = item.Attributes.GetNamedItem("string")?.Value;
+                            string talker = dialogNode.Attributes.GetNamedItem("talker")?.Value;
+                            string standing = dialogNode.Attributes.GetNamedItem("standing")?.Value;
+                            string str = dialogNode.Attributes.GetNamedItem("string")?.Value;
                             Prop props = new Prop
                             {
-                                Character = talker == "narrator" ? "" : (string) Json["Character"][talker]["Name"],
+                                Character = talker == "narrator" ? "" : (string)Json["Character"][talker]["Name"],
                                 Standing = standing,
-                                Str = (string) Json["Text"][str]
+                                Str = (string)Json["Text"][str]
                             };
                             DialogData dialogData = new DialogData(scene, DialogDataType.Text, props);
                             scene.DialogDatas.Add(dialogData);
                             break;
                         }
-                    // 대화 내용 없이 캐릭터 스탠딩을 출력할 때 사용
                     case "ShowCharacter":
                         {
-                            string cid = item.Attributes.GetNamedItem("cid")?.Value;
-                            string standing = item.Attributes.GetNamedItem("standing")?.Value;
+                            string cid = dialogNode.Attributes.GetNamedItem("cid")?.Value;
+                            string standing = dialogNode.Attributes.GetNamedItem("standing")?.Value;
                             Prop props = new Prop
                             {
                                 Character = cid,
@@ -65,10 +63,9 @@ class XmlManager
                             scene.DialogDatas.Add(dialogData);
                             break;
                         }
-                    // 캐릭터 스탠딩을 삭제할 때 사용
                     case "HideCharacter":
                         {
-                            string cid = item.Attributes.GetNamedItem("cid")?.Value;
+                            string cid = dialogNode.Attributes.GetNamedItem("cid")?.Value;
                             Prop props = new Prop
                             {
                                 Character = cid
@@ -77,30 +74,30 @@ class XmlManager
                             scene.DialogDatas.Add(dialogData);
                             break;
                         }
-                    // 선택지
                     case "Select":
                         {
-                            string talker = item.Attributes.GetNamedItem("talker")?.Value;
-                            string standing = item.Attributes.GetNamedItem("standing")?.Value;
-                            string str = item.Attributes.GetNamedItem("string")?.Value;
+                            string talker = dialogNode.Attributes.GetNamedItem("talker")?.Value;
+                            string standing = dialogNode.Attributes.GetNamedItem("standing")?.Value;
+                            string str = dialogNode.Attributes.GetNamedItem("string")?.Value;
                             List<DialogData> Cases = new List<DialogData>();
-                            foreach (XmlNode _case in item)
+                            for (int caseIdx = 0; caseIdx < dialogNode.ChildNodes.Count; ++caseIdx)
                             {
-                                string _goto = _case.Attributes.GetNamedItem("goto")?.Value;
-                                string _str = _case.Attributes.GetNamedItem("string")?.Value;
-                                Prop _props = new Prop
+                                XmlNode caseNode = dialogNode.ChildNodes[caseIdx];
+                                string gotoSid = caseNode.Attributes.GetNamedItem("goto")?.Value;
+                                string caseStr = caseNode.Attributes.GetNamedItem("string")?.Value;
+                                Prop caseProps = new Prop
                                 {
-                                    Sid = _goto,
-                                    Str = (string) Json["Text"][_str]
+                                    Sid = gotoSid,
+                                    Str = (string)Json["Text"][caseStr]
                                 };
-                                DialogData Case = new DialogData(scene, DialogDataType.Case, _props);
+                                DialogData Case = new DialogData(scene, DialogDataType.Case, caseProps);
                                 Cases.Add(Case);
                             }
                             Prop props = new Prop
                             {
-                                Character = (string) Json["Character"][talker]["Name"],
+                                Character = (string)Json["Character"][talker]["Name"],
                                 Standing = standing,
-                                Str = (string) Json["Text"][str],
+                                Str = (string)Json["Text"][str],
                                 Cases = Cases
                             };
                             DialogData dialogData = new DialogData(scene, DialogDataType.Select, props);

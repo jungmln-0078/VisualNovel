@@ -6,10 +6,10 @@ using System.IO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-public class JsonManager
+public class JsonManager : SingleTon<JsonManager>
 {
-    public static string Locale { get; set; } = "ko_KR";
-    public static JObject GetLocale()
+    public string Locale { get; set; } = "ko_KR";
+    public JObject GetLocale()
     {
         TextAsset JsonFile = Resources.Load($"Localization/{Locale}") as TextAsset;
         string jsonString = JsonFile.text;

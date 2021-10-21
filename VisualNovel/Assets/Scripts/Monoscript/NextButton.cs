@@ -6,13 +6,13 @@ public class NextButton : MonoBehaviour
 {
     public void OnClick()
     {
-        DialogManager dialogManager = GameObject.Find("DialogManager").GetComponent<DialogManager>();
+        DialogManager dialogManager = DialogManager.Instance;
         if (dialogManager.IsWritingText && GameObject.Find("Select") == null)
         {
-            dialogManager.EndWriteText();
+            dialogManager.StopWriteText();
         } else
         {
-            dialogManager.IncreaseDialogIdx();
+            dialogManager.NextDialog();
         }
     }
 

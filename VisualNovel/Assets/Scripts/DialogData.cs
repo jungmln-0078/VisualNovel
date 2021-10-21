@@ -10,7 +10,7 @@ public enum DialogDataType{
     Select,
     Case
 }
-struct Scene
+public struct Scene
 {
     public string Sid { get; set; }
     public string Background { get; set; }
@@ -28,7 +28,7 @@ struct Scene
     }
 }
 
-struct DialogData
+public struct DialogData
 {
     public Scene Scene { get; set; }
     public DialogDataType Type { get; set; }
@@ -42,7 +42,7 @@ struct DialogData
     }
 }
 
-struct Prop
+public struct Prop
 {
     public string? Character { get; set; }
     public string? Sid { get; set; }

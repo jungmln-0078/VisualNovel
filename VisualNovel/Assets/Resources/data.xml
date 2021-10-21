@@ -11,6 +11,7 @@
 	</Scene>
   <Scene sid="A_001a" background="ex02">
     <Text talker="A" string="T_99_008" />
+    <Text talker="B" string="T_99_009" />
   </Scene>
 	<Scene sid="A_002" background="ex02">
     <Text talker="B" string="T_99_007" />
