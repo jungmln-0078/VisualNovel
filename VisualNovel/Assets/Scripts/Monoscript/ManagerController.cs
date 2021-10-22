@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 
 public class ManagerController : MonoBehaviour
 {
+    private string _sceneTemp;
     void Awake()
     {
         object[] instance = FindObjectsOfType(typeof(ManagerController));
@@ -40,6 +41,15 @@ public class ManagerController : MonoBehaviour
                     dialogManager.OnResume();
                     break;
                 }
+            case "Main":
+                {
+                    if (_sceneTemp == "InGame")
+                    {
+                        DialogManager.Instance.StopAllCoroutines();
+                    }
+                    break;
+                }
         }
+        _sceneTemp = scene;
     }
 }

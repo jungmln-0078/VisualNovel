@@ -51,6 +51,7 @@ public class DialogManager : MonoSingleTon<DialogManager>
         _dialogText.text = _currentDialog.Props.Str;
         _nextButton.text = "\n¡å  ";
         IsWritingText = false;
+        ToggleMainButton();
         _coroutine = null;
         if (_isWritingSelectText)
         {
@@ -81,6 +82,11 @@ public class DialogManager : MonoSingleTon<DialogManager>
     {
         LoadAsset();
         LoadScene();
+    }
+
+    void ToggleMainButton()
+    {
+        GameObject.Find("Canvas").transform.Find("GotoMain").gameObject.SetActive(!IsWritingText);
     }
 
     void Start()
@@ -165,7 +171,8 @@ public class DialogManager : MonoSingleTon<DialogManager>
         _dialogText.text = "";
         _nextButton.text = "";
         IsWritingText = true;
-        for (int i = 0; i < text.Length; i++)
+        ToggleMainButton();
+        for (int i = 0; i < text.Length; ++i)
         {
             sb.Append(text[i]);
             _dialogText.text = sb.ToString();
@@ -173,6 +180,7 @@ public class DialogManager : MonoSingleTon<DialogManager>
         }
         _nextButton.text = "\n¡å  ";
         IsWritingText = false;
+        ToggleMainButton();
         _coroutine = null;
         if (type == "Select")
         {

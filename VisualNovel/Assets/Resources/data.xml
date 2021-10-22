@@ -6,12 +6,20 @@
 		<Select talker="A" standing="A_serious" string="T_99_003">
 			<Case goto="" string="T_99_004" />
 			<Case goto="A_001a" string="T_99_005" />
+      <Case goto="A_001b" string="T_99_011" />
+      <Case goto="A_001c" string="T_99_011" />
 		</Select>
 		<Text talker="B" string="T_99_006" />
 	</Scene>
   <Scene sid="A_001a" background="ex02">
     <Text talker="A" string="T_99_008" />
     <Text talker="B" string="T_99_009" />
+  </Scene>
+  <Scene sid="A_001b" background="ex01">
+    <Text talker="B" string="T_99_010" />
+  </Scene>
+  <Scene sid="A_001c" background="ex01">
+    <Text talker="B" string="T_99_008" />
   </Scene>
 	<Scene sid="A_002" background="ex02">
     <Text talker="B" string="T_99_007" />
