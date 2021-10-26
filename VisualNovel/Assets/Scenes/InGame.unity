@@ -497,8 +497,8 @@ RectTransform:
   - {fileID: 875555930}
   - {fileID: 1180560977}
   - {fileID: 724687412}
-  - {fileID: 1103709297}
   - {fileID: 1037848982}
+  - {fileID: 1103709297}
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -520,7 +520,7 @@ GameObject:
   - component: {fileID: 724687414}
   - component: {fileID: 724687413}
   m_Layer: 5
-  m_Name: ToggleMenu
+  m_Name: MenuButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -816,7 +816,7 @@ RectTransform:
   m_Children:
   - {fileID: 626931530}
   m_Father: {fileID: 629688744}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
@@ -942,7 +942,7 @@ GameObject:
   - component: {fileID: 1103709298}
   - component: {fileID: 1103709299}
   m_Layer: 5
-  m_Name: Select
+  m_Name: ScreenMask
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -960,7 +960,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 629688744}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}

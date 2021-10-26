@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class MainButton : MonoBehaviour
+public class MoveSceneButton : MonoBehaviour
 {
     public string Scene;
     public void OnClick()

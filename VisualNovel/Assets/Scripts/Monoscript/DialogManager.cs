@@ -15,7 +15,7 @@ public class DialogManager : MonoSingleTon<DialogManager>
     private Coroutine _coroutine;
 
     // set on start()
-    private GameObject _selectScreen;
+    private GameObject _screenMask;
     private Text _dialogText;
     private Text _characterText;
     private GameObject _caseButton;
@@ -75,7 +75,7 @@ public class DialogManager : MonoSingleTon<DialogManager>
         {
             Destroy(_case);
         }
-        _selectScreen.SetActive(false);
+        _screenMask.SetActive(false);
     }
 
     public void OnResume()
@@ -97,7 +97,7 @@ public class DialogManager : MonoSingleTon<DialogManager>
 
     void LoadAsset()
     {
-        _selectScreen = GameObject.Find("Canvas").transform.Find("Select").gameObject;
+        _screenMask = GameObject.Find("Canvas").transform.Find("ScreenMask").gameObject;
         _dialogText = GameObject.Find("Talk").gameObject.GetComponent<Text>();
         _characterText = GameObject.Find("TalkerName").gameObject.GetComponent<Text>();
         _caseButton = (GameObject)ResourceManager.Instance.Get<GameObject>("Prefab/Case");
@@ -148,13 +148,13 @@ public class DialogManager : MonoSingleTon<DialogManager>
     void ShowSelectScreen()
     {
         _isWritingSelectText = false;
-        _selectScreen.SetActive(true);
+        _screenMask.SetActive(true);
         List<DialogData> cases = _currentDialog.Props.Cases;
         for (int caseIdx = 0; caseIdx < cases.Count; ++caseIdx)
         {
             GameObject caseObj = Instantiate(_caseButton);
             caseObj.name = $"Case {caseIdx}";
-            caseObj.transform.SetParent(_selectScreen.transform);
+            caseObj.transform.SetParent(_screenMask.transform);
             caseObj.transform.GetChild(0).GetComponent<Text>().text = cases[caseIdx].Props.Str;
             caseObj.GetComponent<SelectCase>().SetGoto(cases[caseIdx].Props.Sid);
 
