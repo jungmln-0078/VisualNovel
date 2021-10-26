@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>  
-<Data version="d0.1">
+<Data>
 	<Scene sid="A_001" background="ex01" next="A_002">
 		<Text talker="A" standing="A_serious" string="T_99_001" />
 		<Text talker="narrator" string="T_99_002" />
