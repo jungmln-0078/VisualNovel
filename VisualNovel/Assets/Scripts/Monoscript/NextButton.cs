@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class NextButton : MonoBehaviour
@@ -10,7 +8,8 @@ public class NextButton : MonoBehaviour
         if (dialogManager.IsWritingText && GameObject.Find("Select") == null)
         {
             dialogManager.StopWriteText();
-        } else
+        }
+        else
         {
             dialogManager.NextDialog();
         }

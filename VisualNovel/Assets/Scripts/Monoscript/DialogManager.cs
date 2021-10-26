@@ -69,7 +69,7 @@ public class DialogManager : MonoSingleTon<DialogManager>
         }
         else
         {
-           NextDialog();
+            NextDialog();
         }
         foreach (GameObject _case in GameObject.FindGameObjectsWithTag("Case"))
         {
@@ -100,7 +100,7 @@ public class DialogManager : MonoSingleTon<DialogManager>
         _selectScreen = GameObject.Find("Canvas").transform.Find("Select").gameObject;
         _dialogText = GameObject.Find("Talk").gameObject.GetComponent<Text>();
         _characterText = GameObject.Find("TalkerName").gameObject.GetComponent<Text>();
-        _caseButton = ResourceManager.Instance.Get("Prefab/Case") as GameObject;
+        _caseButton = (GameObject)ResourceManager.Instance.Get<GameObject>("Prefab/Case");
         _backgroundSprite = GameObject.Find("Background").gameObject.GetComponent<SpriteRenderer>();
         _nextButton = GameObject.Find("ButtonDisplay").gameObject.GetComponent<Text>();
         _scenes = XmlManager.Instance.LoadXml();
@@ -109,7 +109,7 @@ public class DialogManager : MonoSingleTon<DialogManager>
     void LoadScene()
     {
         _currentScene = _scenes[_sceneIdx];
-        _backgroundSprite.sprite = Resources.Load<Sprite>($"Background/{_currentScene.Background}");
+        _backgroundSprite.sprite = (Sprite)ResourceManager.Instance.Get<Sprite>($"Background/{_currentScene.Background}");
         LoadDialog();
     }
 
@@ -159,7 +159,7 @@ public class DialogManager : MonoSingleTon<DialogManager>
             caseObj.GetComponent<SelectCase>().SetGoto(cases[caseIdx].Props.Sid);
 
             RectTransform pos = caseObj.GetComponent<RectTransform>();
-            pos.anchoredPosition = new Vector2(0, (50 * (cases.Count - 1)) - (100 *  caseIdx));
+            pos.anchoredPosition = new Vector2(0, (50 * (cases.Count - 1)) - (100 * caseIdx));
             pos.localScale = new Vector3(1, 1, 1);
         }
     }

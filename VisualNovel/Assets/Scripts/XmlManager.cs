@@ -1,17 +1,14 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
-using System;
-using System.IO;
 using System.Xml;
-using Newtonsoft.Json.Linq;
+using UnityEngine;
 
 public class XmlManager : SingleTon<XmlManager>
 {
     public List<Scene> LoadXml()
     {
         XmlDocument Xml = new XmlDocument();
-        TextAsset XmlFile = ResourceManager.Instance.Get("data") as TextAsset;
+        TextAsset XmlFile = (TextAsset)ResourceManager.Instance.Get<TextAsset>("data");
         Xml.LoadXml(XmlFile.text);
         XmlNodeList XmlList = Xml.GetElementsByTagName("Scene");
 

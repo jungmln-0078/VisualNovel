@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class ManagerController : MonoBehaviour
@@ -9,7 +8,6 @@ public class ManagerController : MonoBehaviour
     {
         object[] instance = FindObjectsOfType(typeof(ManagerController));
         DontDestroyOnLoad(gameObject);
-        ResourceManager.Instance.LoadResources();
         if (instance.Length > 1)
         {
             Destroy(gameObject);

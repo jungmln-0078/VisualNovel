@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class SingleTon<T> where T : SingleTon<T>, new()
@@ -18,7 +16,7 @@ public class SingleTon<T> where T : SingleTon<T>, new()
     }
 }
 
-public class MonoSingleTon<T>: MonoBehaviour where T : MonoBehaviour, new()
+public class MonoSingleTon<T> : MonoBehaviour where T : MonoBehaviour, new()
 {
     private static T _instance;
     private static bool _isDestroyed = false;
@@ -54,4 +52,4 @@ public class MonoSingleTon<T>: MonoBehaviour where T : MonoBehaviour, new()
     {
         _isDestroyed = true;
     }
-}   
+}

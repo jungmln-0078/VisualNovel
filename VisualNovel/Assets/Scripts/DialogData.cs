@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 #nullable enable
-public enum DialogDataType{
+public enum DialogDataType
+{
     Text,
     ShowCharacter,
     HideCharacter,

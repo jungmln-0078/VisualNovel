@@ -1,11 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class SelectCase : MonoBehaviour
 {
     private string _goto;
-    
+
     public void OnClick()
     {
         DialogManager dialogManager = DialogManager.Instance;
